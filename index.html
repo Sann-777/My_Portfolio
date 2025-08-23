@@ -73,7 +73,7 @@
             </div>
         </div>
 
-        <div class="project-section" id="projects">
+          <div class="project-section" id="projects">
             <h2 class="page-header">Projects</h2>
 
             <div class="project-container">
@@ -169,8 +169,8 @@
                       </div>
                     </div>
                     
-                    <div class="project-card" id="project2">
-                      <div class="project-number project-number-left">02</div>
+                    <div class="project-card" id="project4">
+                      <div class="project-number project-number-left">04</div>
                       <div class="project-content project-content-right">
                         <div class="project-skill-container">
                           <img class="project-skill" src="./images/stack/HTML.png" alt="" />
@@ -196,11 +196,10 @@
                             </a>
                         </div>
                       </div>
+
                     </div>
                 </div>
             </div>
-
-        </div>
         
         <div id="skills" class="container skills-container ">
           <div class="skill-fade-text">Skills</div>
@@ -273,7 +272,7 @@
 
 
             <div class="contactus-form-container">
-              <form class="form" action="">
+              <form class="form" id="contact-form">
                 <div class="formfield-container">
                   <input class="formfield" 
                   type="text" 
@@ -361,19 +360,19 @@
   </script>
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2.4.1/dist/email.min.js"></script>
   <script>
-    // Initialize EmailJS
+    // Initialize EmailJS with your Public Key
     (function() {
-      emailjs.init("m-MopZWfs4HihMXcY");
+      emailjs.init("m-MopZWfs4HihMXcY"); 
     })();
   
     // Handle form submission
-    document.getElementById('contactme').addEventListener('submit', function(event) {
+    document.getElementById("contact-form").addEventListener("submit", function(event) {
       event.preventDefault();
   
-      emailjs.sendForm('service_pt0d3ll', 'template_wd62vx3', this)
+      emailjs.sendForm("service_pt0d3ll", "template_h8dvlzr", this)
         .then(function() {
           alert("✅ Message sent successfully!");
-          document.getElementById('contact-form').reset();
+          document.getElementById("contact-form").reset();
         }, function(error) {
           alert("❌ Failed to send: " + JSON.stringify(error));
         });

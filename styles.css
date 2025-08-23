@@ -733,3 +733,32 @@ footer{
   display:flex;
   gap:1rem;
 }
+
+/* Dark Mode Styles */
+.dark-mode {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+.dark-mode .navbar,
+.dark-mode .project-section,
+.dark-mode .contactus-form-container,
+.dark-mode footer {
+  background-color: #1e1e1e;
+}
+
+.dark-mode .nav-items div a,
+.dark-mode .hero-section-heading,
+.dark-mode .skill-heading,
+.dark-mode .contactus-heading {
+  color: #e0e0e0;
+}
+
+.dark-mode .btn-pink {
+  background-color: #bb86fc;
+}
+
+.dark-mode .btn-pink:hover {
+  border: solid 3px #bb86fc;
+  color: white;
+}

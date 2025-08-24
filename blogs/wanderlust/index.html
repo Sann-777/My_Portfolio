@@ -1,142 +1,185 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Homelabs Project - Sandeep Singh</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wanderlust – Blog</title>
   <style>
-    /* Global Styles */
     body {
-      font-family: 'Arial', sans-serif;
-      background: #ffffff;
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
       margin: 0;
       padding: 0;
-      line-height: 1.7;
-      color: #000000;
+      background: url('./images/bg.png') no-repeat center center fixed; 
+      background-size: cover;
+      color: #333;
     }
-
-    /* Header */
-    header {
-      background: #4e45d5;
-      color: #ffffff;
-      padding: 40px 20px;
-      text-align: center;
+    .overlay {
+      background: rgba(0,0,0,0.6); /* dark overlay so text is readable */
+      min-height: 100vh;
     }
-    header h1 {
-      margin: 0;
-      font-size: 2.5rem;
-    }
-    header p {
-      font-size: 1.1rem;
-      margin-top: 10px;
-    }
-
-    /* Container */
-    .container {
-      max-width: 950px;
-      margin: auto;
-      padding: 30px 20px;
-    }
-
-    h2 {
-      color: #e84949;
-      margin-top: 40px;
-    }
-    h2::after {
-      content: '';
-      display: block;
-      width: 60px;
-      height: 3px;
-      background: #4e45d5;
-      margin-top: 8px;
-    }
-
-    p, li {
-      font-size: 1.05rem;
-    }
-
-    ul, ol {
-      margin-left: 20px;
-    }
-
-    /* Highlight code/keywords */
-    code {
-      background: #f2f2f2;
-      padding: 3px 6px;
-      border-radius: 4px;
-      font-size: 0.95rem;
-    }
-
-    /* Footer */
-    .footer {
-      background: #f7f7f7;
-      text-align: center;
-      padding: 15px;
-      margin-top: 40px;
-      border-top: 2px solid #e84949;
-      color: #555;
-    }
+    .hero { color: #fff; padding: 3rem 2rem; text-align: center; }
+    .container { max-width: 1000px; margin: auto; padding: 2rem; background: #fff; }
+    h1, h2, h3 { color: #2d3748; }
+    pre { background: #1a202c; color: #f8f8f2; padding: 1rem; border-radius: 8px; overflow-x: auto; }
+    code { font-family: monospace; }
+    .toc { background: #edf2f7; padding: 1rem; border-radius: 8px; margin-bottom: 2rem; }
+    .screenshot { margin: 1.5rem 0; text-align: center; }
+    .screenshot img { max-width: 100%; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+    .tags { margin-top: 2rem; }
+    .tags span { display: inline-block; background: #e2e8f0; color: #2d3748; padding: 0.3rem 0.8rem; border-radius: 20px; margin: 0.3rem; font-size: 0.9rem; }
   </style>
 </head>
 <body>
-  <header>
-    <h1>My Homelabs Project</h1>
-    <p>Exploring DevOps with my own local setup 🚀</p>
-  </header>
+  <div class="overlay">
+    <!-- all your blog content here -->
+    <section class="hero">
+      <h1 style="color: white;">🚀 Wanderlust Project – DevOps CI/CD Homelab Setup</h1>
+      <p>A three-tier application to post travel blogs with full CI/CD pipeline, GitOps, and monitoring.</p>
+    </section>
 
-  <div class="container">
-    <h2>🚀 Building My First Homelabs Project</h2>
-    <p>
-      Over the last few weeks, I decided to set up my own <strong>homelabs environment</strong>.
-      The main goal was simple: learn DevOps tools and cloud-native technologies in a
-      real-world setup without spending money on cloud services.
-    </p>
-
-    <h2>🛠️ My Setup</h2>
-    <ul>
-      <li><strong>Hardware:</strong> Mac (controller) + Laptop (Kubernetes node)</li>
-      <li><strong>Tools:</strong> Docker, Kubernetes, Jenkins, ArgoCD, Trivy, OWASP Dependency-Check</li>
-    </ul>
-
-    <h2>🌐 What I Built</h2>
-    <ol>
-      <li>Local Kubernetes cluster across two machines.</li>
-      <li>CI/CD pipeline with Jenkins.</li>
-      <li>GitOps deployment with ArgoCD.</li>
-      <li>Security scanning with Trivy and Dependency-Check.</li>
-    </ol>
-
-    <h2>⚡ Challenges I Faced</h2>
-    <p>
-      Networking issues, memory usage struggles, and TLS configuration were some of the biggest
-      challenges I solved along the way.
-    </p>
-
-    <h2>🎯 What I Learned</h2>
-    <ul>
-      <li>Kubernetes cluster management.</li>
-      <li>Complete CI/CD workflow.</li>
-      <li>GitOps practices.</li>
-      <li>Troubleshooting skills.</li>
-    </ul>
-
-    <h2>🔮 Next Steps</h2>
-    <ul>
-      <li>Add Prometheus & Grafana monitoring.</li>
-      <li>Automate with Ansible.</li>
-      <li>Try running the setup on cloud.</li>
-    </ul>
-
-    <h2>📝 Final Thoughts</h2>
-    <p>
-      This homelabs project gave me a true production-like experience inside my own room.
-      It was challenging, fun, and full of learnings. If you want to master DevOps, I highly
-      recommend setting up your own homelab.
-    </p>
-  </div>
-
-  <div class="footer">
-    <p>© 2025 Sandeep Singh | Homelabs Project Blog</p>
+    <div class="container">
+      <!-- all your sections go here -->
+      <section class="toc">
+        <h2>📑 Table of Contents</h2>
+        <ul>
+          <li><a href="#intro">Introduction</a></li>
+          <li><a href="#infra-setup">Infrastructure Setup</a></li>
+          <li><a href="#jenkins">Jenkins Setup</a></li>
+          <li><a href="#ci-pipeline">CI Pipeline</a></li>
+          <li><a href="#cd-pipeline">CD Pipeline with ArgoCD</a></li>
+          <li><a href="#monitoring">Monitoring with Prometheus & Grafana</a></li>
+          <li><a href="#conclusion">Conclusion</a></li>
+        </ul>
+      </section>
+  
+      <section id="intro">
+        <h2>🌍 Introduction</h2>
+        <p><strong>Wanderlust</strong> is my homelab DevOps project where I built and deployed a three‑tier travel blog application. The goal was to practice end‑to‑end CI/CD pipelines, GitOps with ArgoCD, security scans, and monitoring.</p>
+      </section>
+  
+      <section id="infra-setup">
+        <h2>🛠 Infrastructure Setup</h2>
+        <p>Since this was a homelab, I created a compact setup on my Mac and another laptop:</p>
+        <ul>
+          <li>💻 <strong>Mac (Jenkins Server):</strong> Installed Java and Jenkins</li>
+          <li>🖥 <strong>VM on Mac:</strong> Installed Docker, Docker Compose, Java, kubectl, SonarQube, Trivy, and initiated a <code>k3s</code> cluster (master/control‑plane)</li>
+          <li>💻 <strong>Another Laptop:</strong> Added as a worker node to the <code>k3s</code> cluster</li>
+          <li>Both VM and laptop were added as Jenkins agents (CI on VM, CD on worker)</li>
+        </ul>
+  
+        <div class="screenshot">
+          <p>📸 Screenshot: Cluster Setup</p>
+          <img src="images/Workflow.png" alt="Cluster Setup">
+        </div>
+      </section>
+  
+      <section id="jenkins">
+        <h2>🔧 Jenkins Setup</h2>
+        <p>On Jenkins, I configured credentials and plugins to integrate with external tools:</p>
+        <ul>
+          <li>🔑 GitHub, DockerHub, SonarQube credentials</li>
+          <li>📩 SMTP on port 465 for email notifications</li>
+          <li>🔌 Plugins: OWASP Dependency Check, SonarQube, NodeJS, Docker, Pipeline Stage View, Blue Ocean</li>
+        </ul>
+  
+        <h3>SonarQube Integration</h3>
+        <pre><code># Example: Adding SonarQube token as secret text in Jenkins
+  Manage Jenkins → Credentials → Add Secret Text → SONAR_TOKEN</code></pre>
+  
+        <h3>Shared Libraries</h3>
+        <p>I created reusable <strong>Groovy shared libraries</strong> for Jenkins pipelines and linked them as a global trusted library in Jenkins. Repo: 
+        <a href="https://github.com/Sann-777/Jenkins-shared-libraries" target="_blank">My Shared Library for Jenkins</a></p>
+  
+        <div class="screenshot">
+          <p>📸 Screenshot: Jenkins Pipeline</p>
+          <img src="images/jenkins-pipeline.png" alt="Jenkins Pipeline">
+        </div>
+      </section>
+  
+      <section id="ci-pipeline">
+        <h2>⚙️ CI Pipeline</h2>
+        <p>The CI pipeline ran on the VM (Jenkins agent) and included:</p>
+        <ol>
+          <li>Checkout from GitHub</li>
+          <li>Build & test</li>
+          <li>Static code analysis with SonarQube</li>
+          <li>Security scan with Trivy & OWASP Dependency Check</li>
+          <li>Docker image build & push to DockerHub</li>
+        </ol>
+  
+        <pre><code>pipeline {
+    agent any
+    stages {
+      stage('Checkout') {
+        steps { git 'https://github.com/username/wanderlust.git' }
+      }
+      stage('Build & Test') {
+        steps { sh 'mvn clean install' }
+      }
+      stage('SonarQube Analysis') {
+        steps { withSonarQubeEnv('MySonarQube') { sh 'mvn sonar:sonar' } }
+      }
+      stage('Trivy Scan') {
+        steps { sh 'trivy image myapp:latest' }
+      }
+      stage('Build Docker Image') {
+        steps { sh 'docker build -t myuser/wanderlust:latest .' }
+      }
+      stage('Push to DockerHub') {
+        steps { sh 'docker push myuser/wanderlust:latest' }
+      }
+    }
+  }
+  </code></pre>
+  
+      </section>
+  
+      <section id="cd-pipeline">
+        <h2>🚀 CD Pipeline with ArgoCD</h2>
+        <p>For Continuous Deployment, I used ArgoCD on the <code>k3s</code> cluster.</p>
+        <ul>
+          <li>Created <code>argocd</code> namespace</li>
+          <li>Installed ArgoCD using Helm</li>
+          <li>Configured GitHub repo → ArgoCD App → Kubernetes cluster</li>
+          <li>Enabled <strong>auto‑sync</strong>, <strong>prune</strong>, and <strong>self‑heal</strong></li>
+        </ul>
+  
+        <div class="screenshot">
+          <p>📸 Screenshot: ArgoCD App</p>
+          <img src="images/argocd-app.png" alt="ArgoCD App">
+        </div>
+      </section>
+  
+      <section id="monitoring">
+        <h2>📊 Monitoring with Prometheus & Grafana</h2>
+        <p>I deployed Prometheus and Grafana using Helm charts. They were scheduled on the worker node by applying <strong>node affinity</strong> (opposite of taints/tolerations).</p>
+  
+        <p>Grafana dashboards were configured to visualize cluster metrics, Jenkins jobs, and app performance.</p>
+  
+        <div class="screenshot">
+          <p>📸 Screenshot: Grafana Dashboard</p>
+          <img src="images/grafana-dashboard.png" alt="Grafana Dashboard">
+        </div>
+      </section>
+  
+      <section id="conclusion">
+        <h2>✅ Conclusion</h2>
+        <p>This project gave me hands‑on experience in setting up an end‑to‑end CI/CD workflow, integrating DevSecOps practices, and implementing GitOps with ArgoCD. Even though it was a homelab setup, the concepts can scale to production environments with multiple nodes and cloud resources.</p>
+      </section>
+  
+      <section class="tags">
+        <h3>🏷 Tags</h3>
+        <span>DevOps</span>
+        <span>CI/CD</span>
+        <span>ArgoCD</span>
+        <span>Jenkins</span>
+        <span>Kubernetes</span>
+        <span>Prometheus</span>
+        <span>Grafana</span>
+        <span>Homelab</span>
+      </section>
+    </div>
   </div>
 </body>
 </html>

@@ -113,154 +113,155 @@
         </ol>
         
         <h4>Here's the CI pipeline code</h2>
-        <pre style="max-height:400px; overflow:auto;">
-        <code>
-          @Library('Shared') _
-          pipeline {
-              agent {label 'vinod'}
-              
-              environment{
+          <pre style="max-height:400px; overflow:auto;">
+            <code>
+              @Library('Shared') _
+              pipeline {
+                agent {label 'vinod'}
+                
+                environment{
                   SONAR_HOME = tool "Sonar"
-              }
-              
-              parameters {
+                }
+                
+                parameters {
                   string(name: 'FRONTEND_DOCKER_TAG', defaultValue: '', description: 'Setting docker image for latest push')
                   string(name: 'BACKEND_DOCKER_TAG', defaultValue: '', description: 'Setting docker image for latest push')
-              }
-              
-              stages {
+                }
+                
+                stages {
                   stage("Validate Parameters") {
-                      steps {
-                          script {
-                              if (params.FRONTEND_DOCKER_TAG == '' || params.BACKEND_DOCKER_TAG == '') {
-                                  error("FRONTEND_DOCKER_TAG and BACKEND_DOCKER_TAG must be provided.")
-                              }
-                          }
+                    steps {
+                      script {
+                        if (params.FRONTEND_DOCKER_TAG == '' || params.BACKEND_DOCKER_TAG == '') {
+                          error("FRONTEND_DOCKER_TAG and BACKEND_DOCKER_TAG must be provided.")
+                        }
                       }
+                    }
                   }
                   stage("Workspace cleanup"){
-                      steps{
-                          script{
-                              clean_workspace()
-                          }
+                    steps{
+                      script{
+                        clean_workspace()
                       }
+                    }
                   }
                   
                   stage('Git: Code Cloning') {
-                      steps {
-                          script{
-                              clone("https://github.com/Sann-777/CI-CD-Mega-Project.git","main")
-                          }
+                    steps {
+                      script{
+                        clone("https://github.com/Sann-777/CI-CD-Mega-Project.git","main")
                       }
+                    }
                   }
                   
                   stage("Trivy: Filesystem scan"){
-                      steps{
-                          script{
-                              trivy_scan()
-                          }
+                    steps{
+                      script{
+                        trivy_scan()
                       }
+                    }
                   }
-          
+                  
                   stage("OWASP: Dependency check"){
-                      steps{
-                          script{
-                              owasp_dependency()
-                          }
+                    steps{
+                      script{
+                        owasp_dependency()
                       }
+                    }
                   }
                   
                   stage("SonarQube: Code Analysis"){
-                      steps{
-                          script{
-                              sonarqube_analysis("Sonar","wanderlust","wanderlust")
-                          }
+                    steps{
+                      script{
+                        sonarqube_analysis("Sonar","wanderlust","wanderlust")
                       }
+                    }
                   }
                   
                   stage("SonarQube: Code Quality Gates"){
-                      steps{
-                          script{
-                              sonarqube_code_quality()
-                          }
+                    steps{
+                      script{
+                        sonarqube_code_quality()
                       }
+                    }
                   }
                   
                   stage('Exporting environment variables') {
-                      parallel{
-                          stage("Backend env setup"){
-                              steps {
-                                  script{
-                                      dir("Automations"){
-                                          sh "bash updatebackendnew.sh"
-                                      }
-                                  }
-                              }
+                    parallel{
+                      stage("Backend env setup"){
+                        steps {
+                          script{
+                            dir("Automations"){
+                              sh "bash updatebackendnew.sh"
+                            }
                           }
-                          
-                          stage("Frontend env setup"){
-                              steps {
-                                  script{
-                                      dir("Automations"){
-                                          sh "bash updatefrontendnew.sh"
-                                      }
-                                  }
-                              }
-                          }
+                        }
                       }
+                      
+                      stage("Frontend env setup"){
+                        steps {
+                          script{
+                            dir("Automations"){
+                              sh "bash updatefrontendnew.sh"
+                            }
+                          }
+                        }
+                      }
+                    }
                   }
                   
                   stage("Docker: Build Images"){
-                      steps{
-                          script{
-                                  dir('backend'){
-                                      docker_build("wanderlust-backend-beta","${params.BACKEND_DOCKER_TAG}","asxhazard")
-                                  }
-                              
-                                  dir('frontend'){
-                                      docker_build("wanderlust-frontend-beta","${params.FRONTEND_DOCKER_TAG}","asxhazard")
-                                  }
-                          }
+                    steps{
+                      script{
+                        dir('backend'){
+                          docker_build("wanderlust-backend-beta","${params.BACKEND_DOCKER_TAG}","asxhazard")
+                        }
+                        
+                        dir('frontend'){
+                          docker_build("wanderlust-frontend-beta","${params.FRONTEND_DOCKER_TAG}","asxhazard")
+                        }
                       }
+                    }
                   }
                   
                   stage("Docker: Push to DockerHub"){
-                      steps{
-                          script{
-                              docker_push("wanderlust-backend-beta","${params.BACKEND_DOCKER_TAG}","asxhazard") 
-                              docker_push("wanderlust-frontend-beta","${params.FRONTEND_DOCKER_TAG}","asxhazard")
-                          }
+                    steps{
+                      script{
+                        docker_push("wanderlust-backend-beta","${params.BACKEND_DOCKER_TAG}","asxhazard") 
+                        docker_push("wanderlust-frontend-beta","${params.FRONTEND_DOCKER_TAG}","asxhazard")
                       }
+                    }
                   }
-              }
-              post{
+                }
+                post{
                   success{
-                      echo "CI of your project is successfull"
-                      archiveArtifacts artifacts: '*.xml', followSymlinks: false
-                      build job: "Project-CD", parameters: [
-                          string(name: 'FRONTEND_DOCKER_TAG', value: "${params.FRONTEND_DOCKER_TAG}"),
-                          string(name: 'BACKEND_DOCKER_TAG', value: "${params.BACKEND_DOCKER_TAG}")
-                      ]
+                    echo "CI of your project is successfull"
+                    archiveArtifacts artifacts: '*.xml', followSymlinks: false
+                    build job: "Project-CD", parameters: [
+                    string(name: 'FRONTEND_DOCKER_TAG', value: "${params.FRONTEND_DOCKER_TAG}"),
+                    string(name: 'BACKEND_DOCKER_TAG', value: "${params.BACKEND_DOCKER_TAG}")
+                    ]
                   }
+                }
               }
-          }
-        </code>
-        </pre>
+            </code>
+          </pre>
+          
+        </section>
         
-      </section>
-  
-      <section id="cd-pipeline">
-        <h2>🚀 CD Pipeline with ArgoCD</h2>
-        <p>For Continuous Deployment, I used ArgoCD on the <code>k3s</code> cluster.</p>
-        <ul>
-          <li>Created <code>argocd</code> namespace</li>
-          <li>Installed ArgoCD using Helm</li>
-          <li>Configured GitHub repo → ArgoCD App → Kubernetes cluster</li>
-          <li>Enabled <strong>auto‑sync</strong>, <strong>prune</strong>, and <strong>self‑heal</strong></li>
-        </ul>
-      </section>
-      <pre style="max-height:400px; overflow:auto;">
-      <code>
+        <section id="cd-pipeline">
+          <h2>🚀 CD Pipeline with ArgoCD</h2>
+          <p>For Continuous Deployment, I used ArgoCD on the <code>k3s</code> cluster.</p>
+          <ul>
+            <li>Created <code>argocd</code> namespace</li>
+            <li>Installed ArgoCD using Helm</li>
+            <li>Configured GitHub repo → ArgoCD App → Kubernetes cluster</li>
+            <li>Enabled <strong>auto‑sync</strong>, <strong>prune</strong>, and <strong>self‑heal</strong></li>
+          </ul>
+        </section>
+        <h4>Here's the CD pipeline code</h2>
+        <pre style="max-height:400px; overflow:auto;">
+          <code>
         @Library('Shared') _
         pipeline {
             agent {label 'vinod'}

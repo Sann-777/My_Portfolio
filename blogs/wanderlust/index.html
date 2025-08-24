@@ -88,15 +88,26 @@
   Manage Jenkins → Credentials → Add Secret Text → SONAR_TOKEN</code></pre>
   
         <h3>Shared Libraries</h3>
-        <p>I created reusable <strong>Groovy shared libraries</strong> for Jenkins pipelines and linked them as a global trusted library in Jenkins. Repo: 
+        <p>I created reusable <strong>Groovy shared libraries</strong> for Jenkins pipelines and linked them as a global trusted library in Jenkins.<br>Repo: 
         <a href="https://github.com/Sann-777/Jenkins-shared-libraries" target="_blank">My Shared Library for Jenkins</a></p>
   
         <div class="screenshot">
-          <p>Jenkins CI Pipeline</p>
+          <p style="text-decoration: underline;">Jenkins Dashboard</p>
+          <img src="images/Jenkins_Dashboard.png" alt="Jenkins Pipeline">
+        </div>
+
+        <div class="screenshot">
+          <p style="text-decoration: underline;">Jenkins CI Pipeline</p>
           <img src="images/Jenkins_CI.png" alt="Jenkins Pipeline">
         </div>
+
         <div class="screenshot">
-          <p>Jenkins CD Pipeline</p>
+          <p style="text-decoration: underline;">SonarQube Quality Gate</p>
+          <img src="images/Sonarqube.png" alt="Jenkins Pipeline">
+        </div>
+
+        <div class="screenshot">
+          <p style="text-decoration: underline;">Jenkins CD Pipeline</p>
           <img src="images/Jenkins_CD.png" alt="Jenkins Pipeline">
         </div>
       </section>
@@ -346,21 +357,25 @@
       </pre>
       
       <div class="screenshot">
-        <p>Screenshot: ArgoCD App</p>
+        <p style="text-decoration: underline;">Screenshot: ArgoCD App</p>
           <img src="images/ArgoCD.png" alt="ArgoCD App">
         </div>
       </section>
-  
+      
       <section id="monitoring">
         <h2>📊 Monitoring with Prometheus & Grafana</h2>
         <p>I deployed Prometheus and Grafana using Helm charts. They were scheduled on the worker node by applying <strong>node affinity</strong> (opposite of taints/tolerations).</p>
-  
+        
         <p>Grafana dashboards were configured to visualize cluster metrics, Jenkins jobs, and app performance.</p>
-  
+        
         <div class="screenshot">
-          <p>Screenshot: Grafana Dashboard</p>
-          <img src="images/Grafana.png" alt="Grafana Dashboard">
+          <p style="text-decoration: underline;">Grafana Dashboard</p>
+            <img src="images/Grafana_1.png" alt="ArgoCD App">
         </div>
+        <div class="screenshot">
+            <img src="images/Grafana_2.png" alt="ArgoCD App">
+        </div>
+        
       </section>
   
       <section id="conclusion">

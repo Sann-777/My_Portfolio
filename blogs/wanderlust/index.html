@@ -34,8 +34,8 @@
   <div class="overlay">
     <!-- all your blog content here -->
     <section class="hero">
-      <h1 style="color: white;">🚀 Wanderlust Project – DevOps CI/CD Homelab Setup</h1>
-      <p>A three-tier application to post travel blogs with full CI/CD pipeline, GitOps, and monitoring.</p>
+      <h1 style="color: white; font-size: 3rem;">DevOps Project – WanderLust CI/CD Setup</h1>
+      <p style="font-size: 1.3rem;">A three-tier application to post travel blogs with full CI/CD pipeline, GitOps, and monitoring.</p>
     </section>
 
     <div class="container">
@@ -69,7 +69,7 @@
         </ul>
   
         <div class="screenshot">
-          <p>📸 Screenshot: Cluster Setup</p>
+          <p>My Cluster Setup</p>
           <img src="images/Workflow.png" alt="Cluster Setup">
         </div>
       </section>
@@ -92,8 +92,12 @@
         <a href="https://github.com/Sann-777/Jenkins-shared-libraries" target="_blank">My Shared Library for Jenkins</a></p>
   
         <div class="screenshot">
-          <p>📸 Screenshot: Jenkins Pipeline</p>
-          <img src="images/jenkins-pipeline.png" alt="Jenkins Pipeline">
+          <p>Jenkins CI Pipeline</p>
+          <img src="images/Jenkins_CI.png" alt="Jenkins Pipeline">
+        </div>
+        <div class="screenshot">
+          <p>Jenkins CD Pipeline</p>
+          <img src="images/Jenkins_CD.png" alt="Jenkins Pipeline">
         </div>
       </section>
   
@@ -107,32 +111,142 @@
           <li>Security scan with Trivy & OWASP Dependency Check</li>
           <li>Docker image build & push to DockerHub</li>
         </ol>
-  
-        <pre><code>pipeline {
-    agent any
-    stages {
-      stage('Checkout') {
-        steps { git 'https://github.com/username/wanderlust.git' }
-      }
-      stage('Build & Test') {
-        steps { sh 'mvn clean install' }
-      }
-      stage('SonarQube Analysis') {
-        steps { withSonarQubeEnv('MySonarQube') { sh 'mvn sonar:sonar' } }
-      }
-      stage('Trivy Scan') {
-        steps { sh 'trivy image myapp:latest' }
-      }
-      stage('Build Docker Image') {
-        steps { sh 'docker build -t myuser/wanderlust:latest .' }
-      }
-      stage('Push to DockerHub') {
-        steps { sh 'docker push myuser/wanderlust:latest' }
-      }
-    }
-  }
-  </code></pre>
-  
+        
+        <h4>Here's the CI pipeline code</h2>
+        <pre style="max-height:400px; overflow:auto;">
+        <code>
+          @Library('Shared') _
+          pipeline {
+              agent {label 'vinod'}
+              
+              environment{
+                  SONAR_HOME = tool "Sonar"
+              }
+              
+              parameters {
+                  string(name: 'FRONTEND_DOCKER_TAG', defaultValue: '', description: 'Setting docker image for latest push')
+                  string(name: 'BACKEND_DOCKER_TAG', defaultValue: '', description: 'Setting docker image for latest push')
+              }
+              
+              stages {
+                  stage("Validate Parameters") {
+                      steps {
+                          script {
+                              if (params.FRONTEND_DOCKER_TAG == '' || params.BACKEND_DOCKER_TAG == '') {
+                                  error("FRONTEND_DOCKER_TAG and BACKEND_DOCKER_TAG must be provided.")
+                              }
+                          }
+                      }
+                  }
+                  stage("Workspace cleanup"){
+                      steps{
+                          script{
+                              clean_workspace()
+                          }
+                      }
+                  }
+                  
+                  stage('Git: Code Cloning') {
+                      steps {
+                          script{
+                              clone("https://github.com/Sann-777/CI-CD-Mega-Project.git","main")
+                          }
+                      }
+                  }
+                  
+                  stage("Trivy: Filesystem scan"){
+                      steps{
+                          script{
+                              trivy_scan()
+                          }
+                      }
+                  }
+          
+                  stage("OWASP: Dependency check"){
+                      steps{
+                          script{
+                              owasp_dependency()
+                          }
+                      }
+                  }
+                  
+                  stage("SonarQube: Code Analysis"){
+                      steps{
+                          script{
+                              sonarqube_analysis("Sonar","wanderlust","wanderlust")
+                          }
+                      }
+                  }
+                  
+                  stage("SonarQube: Code Quality Gates"){
+                      steps{
+                          script{
+                              sonarqube_code_quality()
+                          }
+                      }
+                  }
+                  
+                  stage('Exporting environment variables') {
+                      parallel{
+                          stage("Backend env setup"){
+                              steps {
+                                  script{
+                                      dir("Automations"){
+                                          sh "bash updatebackendnew.sh"
+                                      }
+                                  }
+                              }
+                          }
+                          
+                          stage("Frontend env setup"){
+                              steps {
+                                  script{
+                                      dir("Automations"){
+                                          sh "bash updatefrontendnew.sh"
+                                      }
+                                  }
+                              }
+                          }
+                      }
+                  }
+                  
+                  stage("Docker: Build Images"){
+                      steps{
+                          script{
+                                  dir('backend'){
+                                      docker_build("wanderlust-backend-beta","${params.BACKEND_DOCKER_TAG}","asxhazard")
+                                  }
+                              
+                                  dir('frontend'){
+                                      docker_build("wanderlust-frontend-beta","${params.FRONTEND_DOCKER_TAG}","asxhazard")
+                                  }
+                          }
+                      }
+                  }
+                  
+                  stage("Docker: Push to DockerHub"){
+                      steps{
+                          script{
+                              docker_push("wanderlust-backend-beta","${params.BACKEND_DOCKER_TAG}","asxhazard") 
+                              docker_push("wanderlust-frontend-beta","${params.FRONTEND_DOCKER_TAG}","asxhazard")
+                          }
+                      }
+                  }
+              }
+              post{
+                  success{
+                      echo "CI of your project is successfull"
+                      archiveArtifacts artifacts: '*.xml', followSymlinks: false
+                      build job: "Project-CD", parameters: [
+                          string(name: 'FRONTEND_DOCKER_TAG', value: "${params.FRONTEND_DOCKER_TAG}"),
+                          string(name: 'BACKEND_DOCKER_TAG', value: "${params.BACKEND_DOCKER_TAG}")
+                      ]
+                  }
+              }
+          }
+        </code>
+        </pre>
+        
       </section>
   
       <section id="cd-pipeline">
@@ -144,10 +258,95 @@
           <li>Configured GitHub repo → ArgoCD App → Kubernetes cluster</li>
           <li>Enabled <strong>auto‑sync</strong>, <strong>prune</strong>, and <strong>self‑heal</strong></li>
         </ul>
-  
-        <div class="screenshot">
-          <p>📸 Screenshot: ArgoCD App</p>
-          <img src="images/argocd-app.png" alt="ArgoCD App">
+      </section>
+      <pre style="max-height:400px; overflow:auto;">
+      <code>
+        @Library('Shared') _
+        pipeline {
+            agent {label 'vinod'}
+            
+            parameters {
+              string(name: 'FRONTEND_DOCKER_TAG', defaultValue: '', description: 'Frontend Docker tag of the image built by the CI job')
+              string(name: 'BACKEND_DOCKER_TAG', defaultValue: '', description: 'Backend Docker tag of the image built by the CI job')
+            }
+
+            stages {
+                stage("Workspace cleanup"){
+                    steps{
+                        script{
+                            clean_workspace()
+                        }
+                    }
+                }
+                
+                stage('Git: Code Cloning') {
+                    steps {
+                        script{
+                            clone("https://github.com/Sann-777/CI-CD-Mega-Project.git","main")
+                        }
+                    }
+                }
+               
+                stage('Verify: Docker Image Tags') {
+                  steps {
+                      script{
+                          echo "FRONTEND_DOCKER_TAG: ${params.FRONTEND_DOCKER_TAG}"
+                          echo "BACKEND_DOCKER_TAG: ${params.BACKEND_DOCKER_TAG}"
+                      }
+                  }
+                }
+
+                stage("Update: Kubernetes manifests"){
+                  steps{
+                      script{
+                          dir('kubernetes'){
+                              sh """
+                                  sed -i -e s/wanderlust-backend-beta.*/wanderlust-backend-beta:${params.BACKEND_DOCKER_TAG}/g backend.yaml
+                              """
+                          }
+                          
+                          dir('kubernetes'){
+                              sh """
+                                  sed -i -e s/wanderlust-frontend-beta.*/wanderlust-frontend-beta:${params.FRONTEND_DOCKER_TAG}/g frontend.yaml
+                              """
+                          }
+                      }
+                  }
+                }
+                
+                stage("Git: Code update and push to GitHub"){
+                  steps{
+                      script{
+                          withCredentials([gitUsernamePassword(credentialsId: 'Github-cred', gitToolName: 'Default')]) {
+                              sh '''
+                              echo "Checking repository status: "
+                              git status
+                          
+                              echo "Adding changes to git: "
+                              git add .
+                              
+                              echo "Setting Git identity: "
+                              git config user.email "jenkins@example.com"
+                              git config user.name "Jenkins CI"
+      
+                              echo "Committing changes: "
+                              git commit -m "Updated environment variables" || echo "No changes to commit"
+                              
+                              echo "Pushing changes to github: "
+                              git push https://github.com/Sann-777/CI-CD-Mega-Project.git main
+                              '''
+                          }
+                      }
+                  }
+                }
+              }
+            }
+      </code>
+      </pre>
+      
+      <div class="screenshot">
+        <p>Screenshot: ArgoCD App</p>
+          <img src="images/ArgoCD.png" alt="ArgoCD App">
         </div>
       </section>
   
@@ -158,8 +357,8 @@
         <p>Grafana dashboards were configured to visualize cluster metrics, Jenkins jobs, and app performance.</p>
   
         <div class="screenshot">
-          <p>📸 Screenshot: Grafana Dashboard</p>
-          <img src="images/grafana-dashboard.png" alt="Grafana Dashboard">
+          <p>Screenshot: Grafana Dashboard</p>
+          <img src="images/Grafana.png" alt="Grafana Dashboard">
         </div>
       </section>
   

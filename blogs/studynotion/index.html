@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StudyNotion - Full-Stack EdTech Platform | Portfolio Project</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #1f2937;
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    header {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 1.5rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+    
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    
+    .nav-links a {
+      text-decoration: none;
+      color: #4b5563;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+    
+    .nav-links a:hover {
+      color: #667eea;
+    }
+    
+    .hero {
+      background: rgba(255, 255, 255, 0.95);
+      margin: 2rem 0;
+      padding: 4rem 2rem;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    }
+    
+    .hero h1 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .hero p {
+      font-size: 1.25rem;
+      color: #6b7280;
+      max-width: 600px;
+      margin: 0 auto 2rem;
+    }
+    
+    .tech-stack {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+    
+    .tech-tag {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 25px;
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+    
+    .project-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      margin: 3rem 0;
+    }
+    
+    .project-section {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 2.5rem;
+      border-radius: 20px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    }
+    
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid #e5e7eb;
+    }
+    
+    .section-icon {
+      font-size: 2rem;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .section-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #1f2937;
+    }
+    
+    .architecture-diagram {
+      background: #f8fafc;
+      padding: 2rem;
+      border-radius: 15px;
+      margin: 1.5rem 0;
+      border: 2px dashed #cbd5e1;
+    }
+    
+    .architecture-diagram h4 {
+      text-align: center;
+      margin-bottom: 1rem;
+      color: #475569;
+      font-weight: 600;
+    }
+    
+    .service-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .service-card {
+      background: white;
+      padding: 1rem;
+      border-radius: 10px;
+      text-align: center;
+      border: 1px solid #e2e8f0;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .service-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+    
+    .service-name {
+      font-weight: 600;
+      color: #1e40af;
+      margin-bottom: 0.5rem;
+    }
+    
+    .service-tech {
+      font-size: 0.875rem;
+      color: #6b7280;
+    }
+    
+    .feature-list {
+      list-style: none;
+      margin: 1rem 0;
+    }
+    
+    .feature-list li {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #f1f5f9;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .feature-list li::before {
+      content: "✓";
+      color: #10b981;
+      font-weight: bold;
+    }
+    
+    .code-block {
+      background: #1e293b;
+      color: #e2e8f0;
+      padding: 1.5rem;
+      border-radius: 10px;
+      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+      font-size: 0.875rem;
+      overflow-x: auto;
+      margin: 1rem 0;
+    }
+    
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+    
+    .metric-card {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      padding: 1.5rem;
+      border-radius: 15px;
+      text-align: center;
+    }
+    
+    .metric-value {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+    
+    .metric-label {
+      font-size: 0.875rem;
+      opacity: 0.9;
+    }
+    
+    .cta-section {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      padding: 3rem 2rem;
+      border-radius: 20px;
+      text-align: center;
+      margin: 3rem 0;
+    }
+    
+    .cta-section h3 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    
+    .cta-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+    
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: transform 0.2s ease;
+    }
+    
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+    
+    .btn-primary {
+      background: white;
+      color: #667eea;
+    }
+    
+    .btn-secondary {
+      background: transparent;
+      color: white;
+      border: 2px solid white;
+    }
+    
+    footer {
+      background: rgba(255, 255, 255, 0.95);
+      text-align: center;
+      padding: 2rem;
+      margin-top: 3rem;
+      border-radius: 20px 20px 0 0;
+    }
+    
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+      
+      .nav-links {
+        display: none;
+      }
+      
+      .project-section {
+        padding: 1.5rem;
+      }
+      
+      .service-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .metrics-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <div class="logo">StudyNotion</div>
+        <nav>
+          <ul class="nav-links">
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#architecture">Architecture</a></li>
+            <li><a href="#tech-stack">Tech Stack</a></li>
+            <li><a href="#deployment">Deployment</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <section class="hero">
+      <h1>StudyNotion EdTech Platform</h1>
+      <p>A full-stack microservices-based learning management system built with modern technologies and deployed on AWS cloud infrastructure.</p>
+      <div class="tech-stack">
+        <span class="tech-tag">React.js</span>
+        <span class="tech-tag">Node.js</span>
+        <span class="tech-tag">TypeScript</span>
+        <span class="tech-tag">MongoDB</span>
+        <span class="tech-tag">Docker</span>
+        <span class="tech-tag">AWS</span>
+      </div>
+    </section>
+
+    <div class="project-grid">
+      <section id="overview" class="project-section">
+        <div class="section-header">
+          <div class="section-icon">🚀</div>
+          <h2 class="section-title">Project Overview</h2>
+        </div>
+        <p>StudyNotion is a comprehensive EdTech platform that enables instructors to create and manage online courses while providing students with an interactive learning experience. The project demonstrates advanced software architecture patterns, cloud deployment strategies, and modern development practices.</p>
+        
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-value">7</div>
+            <div class="metric-label">Microservices</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value">3</div>
+            <div class="metric-label">Databases</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value">8</div>
+            <div class="metric-label">API Endpoints</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value">100%</div>
+            <div class="metric-label">Containerized</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="architecture" class="project-section">
+        <div class="section-header">
+          <div class="section-icon">🏗️</div>
+          <h2 class="section-title">System Architecture</h2>
+        </div>
+        <p>The platform follows a microservices architecture pattern, ensuring scalability, maintainability, and fault tolerance. Each service is independently deployable and communicates through well-defined APIs.</p>
+        
+        <div class="architecture-diagram">
+          <h4>Microservices Architecture</h4>
+          <div class="service-grid">
+            <div class="service-card">
+              <div class="service-name">API Gateway</div>
+              <div class="service-tech">Node.js + Express</div>
+            </div>
+            <div class="service-card">
+              <div class="service-name">Auth Service</div>
+              <div class="service-tech">JWT + MongoDB</div>
+            </div>
+            <div class="service-card">
+              <div class="service-name">Course Service</div>
+              <div class="service-tech">Content Management</div>
+            </div>
+            <div class="service-card">
+              <div class="service-name">Payment Service</div>
+              <div class="service-tech">Razorpay Integration</div>
+            </div>
+            <div class="service-card">
+              <div class="service-name">Profile Service</div>
+              <div class="service-tech">User Management</div>
+            </div>
+            <div class="service-card">
+              <div class="service-name">Media Service</div>
+              <div class="service-tech">File Uploads</div>
+            </div>
+            <div class="service-card">
+              <div class="service-name">Rating Service</div>
+              <div class="service-tech">Review System</div>
+            </div>
+            <div class="service-card">
+              <div class="service-name">Notification Service</div>
+              <div class="service-tech">Email + SMS</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="tech-stack" class="project-section">
+        <div class="section-header">
+          <div class="section-icon">⚙️</div>
+          <h2 class="section-title">Technology Stack</h2>
+        </div>
+        
+        <h3>Frontend Technologies</h3>
+        <ul class="feature-list">
+          <li>React 18 with TypeScript for type-safe development</li>
+          <li>Tailwind CSS for responsive and modern UI design</li>
+          <li>Redux Toolkit for state management</li>
+          <li>React Router for client-side routing</li>
+          <li>Framer Motion for smooth animations and transitions</li>
+        </ul>
+        
+        <h3>Backend Technologies</h3>
+        <ul class="feature-list">
+          <li>Node.js with Express.js framework</li>
+          <li>MongoDB with Mongoose ODM</li>
+          <li>JWT for secure authentication</li>
+          <li>Razorpay for payment processing</li>
+          <li>Nodemailer for email notifications</li>
+        </ul>
+        
+        <h3>DevOps & Infrastructure</h3>
+        <ul class="feature-list">
+          <li>Docker for containerization</li>
+          <li>Docker Compose for local development</li>
+          <li>AWS ECS Fargate for container orchestration</li>
+          <li>Amazon S3 for file storage</li>
+          <li>CloudFront CDN for global content delivery</li>
+        </ul>
+      </section>
+
+      <section id="deployment" class="project-section">
+        <div class="section-header">
+          <div class="section-icon">🚀</div>
+          <h2 class="section-title">AWS Deployment Strategy</h2>
+        </div>
+        
+        <p>Implemented a production-ready deployment strategy on AWS with cost optimization and scalability in mind.</p>
+        
+        <h3>Infrastructure Components</h3>
+        <ul class="feature-list">
+          <li>ECS Fargate for serverless container management</li>
+          <li>Application Load Balancer for traffic distribution</li>
+          <li>Amazon DocumentDB for managed MongoDB compatibility</li>
+          <li>VPC with private/public subnets for security</li>
+          <li>Route 53 for DNS management</li>
+        </ul>
+        
+        <h3>Cost Optimization</h3>
+        <ul class="feature-list">
+          <li>Estimated daily cost: $11.20 ($336/month)</li>
+          <li>Fargate for pay-per-use container compute</li>
+          <li>S3 lifecycle policies for storage cost reduction</li>
+          <li>CloudFront for reduced data transfer costs</li>
+        </ul>
+        
+        <div class="code-block">
+# Docker Compose Configuration
+version: '3.8'
+services:
+  api-gateway:
+    build: ./api-gateway
+    ports: ["3000:3000"]
+    environment:
+      - NODE_ENV=production
+      - AUTH_SERVICE_URL=http://auth-service:3001
+      - COURSE_SERVICE_URL=http://course-service:3003
+      - PAYMENT_SERVICE_URL=http://payment-service:3004
+        </div>
+      </section>
+
+      <section class="project-section">
+        <div class="section-header">
+          <div class="section-icon">✅</div>
+          <h2 class="section-title">Key Achievements</h2>
+        </div>
+        
+        <ul class="feature-list">
+          <li>Successfully migrated from monolithic to microservices architecture</li>
+          <li>Implemented secure authentication with JWT tokens</li>
+          <li>Integrated payment gateway for course purchases</li>
+          <li>Built responsive UI with modern design principles</li>
+          <li>Deployed scalable infrastructure on AWS cloud</li>
+          <li>Implemented comprehensive error handling and validation</li>
+          <li>Created automated deployment pipeline with Docker</li>
+        </ul>
+      </section>
+    </div>
+
+    <section class="cta-section">
+      <h3>Ready to explore the project?</h3>
+      <p>Check out the live demo, source code, or get in touch to discuss collaboration opportunities.</p>
+      <div class="cta-buttons">
+        <a href="#" class="btn btn-primary">View Live Demo</a>
+        <a href="#" class="btn btn-secondary">Source Code</a>
+        <a href="#" class="btn btn-secondary">Contact Me</a>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 StudyNotion Portfolio Project | Built with modern web technologies and deployed on AWS</p>
+      <p>Demonstrating full-stack development, microservices architecture, and cloud deployment expertise</p>
+    </div>
+  </footer>
+</body>
+</html>

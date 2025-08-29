@@ -398,6 +398,7 @@
             <li><a href="#architecture">Architecture</a></li>
             <li><a href="#frontend">Frontend</a></li>
             <li><a href="#implementation">Backend</a></li>
+            <li><a href="#cicd">CI/CD</a></li>
             <li><a href="#deployment">Deployment</a></li>
             <li><a href="#performance">Performance</a></li>
           </ul>
@@ -726,6 +727,254 @@ src/
         </div>
       </section>
 
+      <section id="cicd" class="section">
+        <div class="section-header">
+          <div class="section-icon">🔄</div>
+          <h2 class="section-title">CI/CD Pipeline with Jenkins & ArgoCD</h2>
+        </div>
+        
+        <div class="subsection">
+          <h3>CI/CD Architecture Overview</h3>
+          <p>The StudyNotion platform implements a robust GitOps-based CI/CD pipeline using Jenkins for Continuous Integration and ArgoCD for Continuous Deployment. This setup ensures automated, reliable, and auditable software delivery from development to production.</p>
+          
+          <h4>Pipeline Components</h4>
+          <ul class="feature-list">
+            <li><strong>Source Control:</strong> GitHub repository with main and feature branch workflows</li>
+            <li><strong>CI Server:</strong> Jenkins running on EC2 instance with persistent storage</li>
+            <li><strong>Container Registry:</strong> Amazon ECR for storing Docker images</li>
+            <li><strong>CD Platform:</strong> ArgoCD running on EKS cluster for GitOps deployment</li>
+            <li><strong>Infrastructure:</strong> Terraform for infrastructure provisioning and management</li>
+            <li><strong>Monitoring:</strong> Prometheus and Grafana for pipeline metrics and alerting</li>
+          </ul>
+        </div>
+        
+        <div class="subsection">
+          <h3>Jenkins Continuous Integration Pipeline</h3>
+          <p>Jenkins orchestrates the build, test, and quality assurance stages of the CI pipeline:</p>
+          
+          <h4>Pipeline Stages & Workflow</h4>
+          <div class="deployment-flow">
+            <div class="flow-step">
+              <div class="step-number">1</div>
+              <div class="step-content">
+                <h4>Code Checkout & Preparation</h4>
+                <p>Clone repository, checkout target branch, and prepare build environment</p>
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="step-number">2</div>
+              <div class="step-content">
+                <h4>Dependency Analysis & Security Scan</h4>
+                <p>npm audit, Snyk vulnerability scanning, and dependency license compliance</p>
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="step-number">3</div>
+              <div class="step-content">
+                <h4>Code Quality & Static Analysis</h4>
+                <p>ESLint, Prettier, SonarQube analysis, and code coverage reporting</p>
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="step-number">4</div>
+              <div class="step-content">
+                <h4>Unit & Integration Testing</h4>
+                <p>Jest test execution, API testing with Supertest, and coverage thresholds</p>
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="step-number">5</div>
+              <div class="step-content">
+                <h4>Docker Image Building</h4>
+                <p>Multi-stage Docker builds, layer optimization, and image tagging</p>
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="step-number">6</div>
+              <div class="step-content">
+                <h4>Image Security Scanning</h4>
+                <p>Trivy vulnerability scanning, base image updates, and security compliance</p>
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="step-number">7</div>
+              <div class="step-content">
+                <h4>Artifact Publishing</h4>
+                <p>Push to ECR, update image tags, and trigger ArgoCD deployment</p>
+              </div>
+            </div>
+          </div>
+          
+          <h4>Detailed Stage Breakdown</h4>
+          <ul class="feature-list">
+            <li><strong>Code Checkout:</strong> Git clone, branch validation, and commit message analysis</li>
+            <li><strong>Dependency Check:</strong> npm audit, license compliance, and outdated package detection</li>
+            <li><strong>Security Scanning:</strong> Snyk vulnerability assessment and CVE database checking</li>
+            <li><strong>Code Quality:</strong> ESLint rules enforcement, Prettier formatting, and SonarQube metrics</li>
+            <li><strong>Testing:</strong> Jest unit tests, integration tests, and minimum 80% coverage requirement</li>
+            <li><strong>Build Process:</strong> TypeScript compilation, bundle optimization, and asset minification</li>
+            <li><strong>Docker Build:</strong> Multi-stage builds, layer caching, and image size optimization</li>
+            <li><strong>Security Scan:</strong> Trivy container scanning and base image vulnerability assessment</li>
+            <li><strong>Registry Push:</strong> ECR authentication, image tagging, and deployment trigger</li>
+          </ul>
+        </div>
+        
+        <div class="subsection">
+          <h3>ArgoCD Continuous Deployment</h3>
+          <p>ArgoCD implements GitOps principles, automatically syncing the Kubernetes cluster with the desired state defined in Git:</p>
+          
+          <h4>GitOps Workflow</h4>
+          <ul class="feature-list">
+            <li><strong>Repository Structure:</strong> Kubernetes manifests stored in dedicated Git repository</li>
+            <li><strong>Application Definitions:</strong> ArgoCD Application CRDs for each microservice</li>
+            <li><strong>Environment Separation:</strong> Staging and production environments with different configurations</li>
+            <li><strong>Rollback Capability:</strong> Automatic rollback to previous stable versions on failures</li>
+            <li><strong>Health Monitoring:</strong> Real-time application health status and sync state</li>
+            <li><strong>Approval Workflows:</strong> Manual approval gates for production deployments</li>
+          </ul>
+          
+          <h4>Deployment Process</h4>
+          <div class="code-block">
+# ArgoCD Application Configuration
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: studynotion-auth-service
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/username/studynotion-k8s
+    targetRevision: HEAD
+    path: k8s/auth-service
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: studynotion
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - PrunePropagationPolicy=foreground
+          </div>
+        </div>
+        
+        <div class="subsection">
+          <h3>Pipeline Configuration & Tools</h3>
+          <p>Detailed configuration of CI/CD tools and their integration:</p>
+          
+          <h4>Jenkins Configuration</h4>
+          <div class="code-block">
+# Jenkinsfile Pipeline Definition
+pipeline {
+    agent any
+    
+    environment {
+        DOCKER_REGISTRY = '123456789.dkr.ecr.us-east-1.amazonaws.com'
+        IMAGE_TAG = "${env.BUILD_NUMBER}-${env.GIT_COMMIT[0..7]}"
+    }
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        
+        stage('Dependency Check') {
+            steps {
+                sh 'npm audit --audit-level moderate'
+                sh 'npx snyk test --severity-threshold=high'
+            }
+        }
+        
+        stage('Code Quality') {
+            steps {
+                sh 'npm run lint'
+                sh 'npm run format:check'
+                sh 'npm run test:coverage'
+            }
+        }
+        
+        stage('Build & Test') {
+            steps {
+                sh 'npm run build'
+                sh 'npm run test:integration'
+            }
+        }
+        
+        stage('Docker Build') {
+            steps {
+                sh 'docker build -t ${DOCKER_REGISTRY}/auth-service:${IMAGE_TAG} .'
+                sh 'docker build -t ${DOCKER_REGISTRY}/auth-service:latest .'
+            }
+        }
+        
+        stage('Security Scan') {
+            steps {
+                sh 'trivy image --severity HIGH,CRITICAL ${DOCKER_REGISTRY}/auth-service:${IMAGE_TAG}'
+            }
+        }
+        
+        stage('Push to ECR') {
+            steps {
+                sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${DOCKER_REGISTRY}'
+                sh 'docker push ${DOCKER_REGISTRY}/auth-service:${IMAGE_TAG}'
+                sh 'docker push ${DOCKER_REGISTRY}/auth-service:latest'
+            }
+        }
+    }
+    
+    post {
+        always {
+            cleanWs()
+        }
+        success {
+            echo 'Pipeline completed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed!'
+        }
+    }
+}
+          </div>
+          
+          <h4>Quality Gates & Thresholds</h4>
+          <ul class="feature-list">
+            <li><strong>Code Coverage:</strong> Minimum 80% test coverage required</li>
+            <li><strong>Security Vulnerabilities:</strong> Zero high/critical vulnerabilities allowed</li>
+            <li><strong>Code Quality:</strong> SonarQube A rating required</li>
+            <li><strong>Build Time:</strong> Maximum 15 minutes for complete pipeline</li>
+            <li><strong>Image Size:</strong> Maximum 500MB for production images</li>
+            <li><strong>Dependency Updates:</strong> Weekly automated dependency updates</li>
+          </ul>
+        </div>
+        
+        <div class="subsection">
+          <h3>Monitoring & Observability</h3>
+          <p>Comprehensive monitoring of the CI/CD pipeline and deployment processes:</p>
+          
+          <h4>Pipeline Metrics</h4>
+          <ul class="feature-list">
+            <li><strong>Build Success Rate:</strong> Target 95% successful builds</li>
+            <li><strong>Deployment Frequency:</strong> Multiple deployments per day capability</li>
+            <li><strong>Lead Time:</strong> Code commit to production deployment tracking</li>
+            <li><strong>Mean Time to Recovery:</strong> Rollback and failure recovery metrics</li>
+            <li><strong>Change Failure Rate:</strong> Percentage of deployments causing incidents</li>
+          </ul>
+          
+          <h4>Tools & Integrations</h4>
+          <ul class="feature-list">
+            <li><strong>Jenkins Plugins:</strong> Blue Ocean, Pipeline, Git, Docker, and AWS plugins</li>
+            <li><strong>ArgoCD Extensions:</strong> Application health monitoring and sync status</li>
+            <li><strong>Security Tools:</strong> Snyk, Trivy, and npm audit integration</li>
+            <li><strong>Quality Tools:</strong> SonarQube, ESLint, and Prettier integration</li>
+            <li><strong>Notification:</strong> Slack, email, and webhook notifications for pipeline events</li>
+          </ul>
+        </div>
+      </section>
+
       <section id="deployment" class="section">
         <div class="section-header">
           <div class="section-icon">🚀</div>
@@ -913,7 +1162,7 @@ services:
             <li><strong>Custom Dashboards:</strong> Business metrics and KPIs</li>
             <li><strong>Alerting:</strong> Proactive notification for critical issues</li>
             <li><strong>Log Aggregation:</strong> Centralized logging with structured data</li>
-          </ul>
+        </ul>
         </div>
         
         <div class="highlight-box">
@@ -927,7 +1176,7 @@ services:
             <li>Implemented comprehensive error handling, validation, and logging</li>
             <li>Created automated deployment pipeline with Docker and CI/CD</li>
             <li>Achieved 99.9% uptime with proper monitoring and alerting</li>
-          </ul>
+      </ul>
         </div>
       </section>
     </div>

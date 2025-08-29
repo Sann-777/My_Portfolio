@@ -206,16 +206,16 @@
       opacity: 0.9;
     }
     
-    .code-block {
-      background: #1e293b;
-      color: #e2e8f0;
-      padding: 1.5rem;
-      border-radius: 8px;
-      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-      font-size: 0.875rem;
-      overflow-x: auto;
-      margin: 1rem 0;
-      border: 1px solid #334155;
+    pre { 
+        background: #1a202c; 
+        color: #f8f8f2; 
+        padding: 1rem; 
+        border-radius: 8px; 
+        overflow-x: auto; 
+    }
+
+    code {
+        font-family: monospace;
     }
     
     .architecture-diagram {
@@ -865,7 +865,7 @@ spec:
           <p>Detailed configuration of CI/CD tools and their integration:</p>
           
           <h4>Jenkins Configuration</h4>
-          <div class="code-block">
+          <pre style="max-height: 600px; overflow: auto;"><code>
 # Jenkinsfile Pipeline Definition
 pipeline {
     agent any
@@ -938,7 +938,7 @@ pipeline {
         }
     }
 }
-          </div>
+</code></pre>
           
           <h4>Quality Gates & Thresholds</h4>
           <ul class="feature-list">
